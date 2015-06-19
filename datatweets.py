@@ -18,6 +18,7 @@ class TweetDataSetReader():
     def read_corpus(self):
         import json
         import os.path
+        self.tweets = []
         self.classes = []
         count = 0
         for l in open(self.base_data_dir+"corpus.csv").readlines():

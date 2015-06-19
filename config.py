@@ -10,7 +10,7 @@ transformers = [
       [ ("emo", EmoticonsReplacer())],
       [ None, ("link", LinkRemover())],
       [ ('postag', POS_tag() ) ],
-      [ None,  ('lema', Lematization() ), ('stem', Steammer()) ],
+      #[ None,  ('lema', Lematization() ), ('stem', Steammer()) ],
       [ ('vect_ngram1', CountVectorizer(ngram_range=(1,1))),
          ('vect_ngram2', CountVectorizer(ngram_range=(1,2))),
          ('vect_ngram3', CountVectorizer(ngram_range=(1,3))),
