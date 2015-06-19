@@ -10,6 +10,39 @@ from nltk.stem.wordnet import WordNetLemmatizer
 cache = {}
 lemmatizer = WordNetLemmatizer()
 
+emoticons = {"happy": ":-) :) :D :o) :] :3 :c) :> =] 8) =) :} :^) :っ) :-))",
+             "laughing" : ":-D 8-D 8D x-D xD X-D XD =-D =D =-3 =3 B^D",
+             "sad" : ">:[ :-( :(  :-c :c :-<  :っC :< :-[ :[ :{",
+             "crying" : ":'-( :'( :,(",
+             "surprise" : ">:O :-O :O :-o :o 8-0 O_O o-o O_o o_O o_o O-O",
+             "kiss": ":* :^* ( '}{' )",
+             "tongue" : ">:P :-P :P X-P x-p xp XP :-p :p =p :-Þ :Þ :þ :-þ :-b :b d:"}
+
+
+class EmoticonsReplacer(BaseEstimator, TransformerMixin):
+
+    def fit(self, x, y=None):
+        return self
+
+    def transform(self, posts):
+        result = np.empty(shape=(len(posts)), dtype=object)
+
+        for i, post in enumerate(posts):
+
+            result[i] = self.replace_emoticons(post)
+
+        return result
+
+
+    def replace_emoticons(self, text):
+
+
+        for senti, emos in emoticons.iteritems():
+            for emo in emos.split():
+                text = text.replace(emo.decode('utf-8'), " "+senti+" ").replace("  ", " ")
+
+        return text
+
 class LinkRemover(BaseEstimator, TransformerMixin):
 
     def fit(self, x, y=None):

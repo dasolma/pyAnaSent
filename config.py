@@ -3,11 +3,13 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC, LinearSVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
-from prepro import Lematization, POS_tag, Steammer
+from prepro import Lematization, POS_tag, Steammer,EmoticonsReplacer, LinkRemover
 from pipelines import *
 
 transformers = [
-      [ None, ('postag', POS_tag() ) ],
+      [ ("emo", EmoticonsReplacer())],
+      [ None, ("link", LinkRemover())],
+      #[ None, ('postag', POS_tag() ) ],
       [ None,  ('lema', Lematization() ), ('stem', Steammer()) ],
       [ ('vect_ngram1', CountVectorizer(ngram_range=(1,1))),
          ('vect_ngram2', CountVectorizer(ngram_range=(1,2))),

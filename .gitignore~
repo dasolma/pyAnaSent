@@ -47,5 +47,5 @@ crashlytics-build.properties
 
 #classifiers
 *.pk
-data/
-
+#test/
+#train/
