@@ -89,7 +89,7 @@ class POS_tag(BaseEstimator, TransformerMixin):
 
         for i, post in enumerate(posts):
             key = "pt_" + str(id(post))
-            if not key in cache: cache[key] = ' '.join(["%s %s"%(t,w)  for w,t in pos_tag(post.split())])
+            if not key in cache: cache[key] = ' '.join(["%s/%s"%(w,t)  for w,t in pos_tag(post.split())])
             #word_tokenize(post.decode('utf-8'))
             post = cache[key]
             result[i] = post
