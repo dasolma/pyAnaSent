@@ -21,10 +21,27 @@ In this work we are analysing the impact of three different NLP techniques:
 
 ## Dataset
 
-The Sanders-Twitter Sentimen Corpus (Niek J. Sanders) is used for the experiments. It consists of 5513 hand-classified tweets. These tweets were classified with respect to one of 4 different topics. Four classifications are used in this corpus: irrelevant, neutral, positive and negative. Only the tweets classified as positive or negative have been used.
+The Sanders-Twitter Sentimen Corpus (Niek J. Sanders) is used for the experiments. It consists of 5513 hand-classified tweets. These tweets were classified with respect to one of 4 different topics. 
+Four classifications are used in this corpus: irrelevant, neutral, positive and negative. Only the tweets classified as positive or negative have been used (4592).
 
 ## Methodology
 
 For the classification stage is necesary to create a feature vector for each tweet. The CountVectorizer of the sklearn library will be used. This create a vector of tokens count. The size of this vector will be the size of the vocabulary used.
 
 ![method](metho.png)
+
+How baseline level of accuracy the pepeline wihout any technique will be used, so only will be applied Preprocess -> Vectorizer -> Train ...
+
+## Framework
+
+The central component is the ModelAnalizer class. This class receive a sklearn pipeline list (preprocessors, transformers and vectorizers) and a classifier list. Train the classifiers with applying each pipeline and score it using the test data.
+
+During the train process for each pipeline the better parameters are searched using the GridSearchCV class. It do a exhaustive search over specified parameter values for a classifier and is optimized by cross-validation.
+
+## Results
+
+![method](graphNaiveBayes.png)
+
+![method](graphRegressionLogistic.png)
+
+![method](graphSVM.png)

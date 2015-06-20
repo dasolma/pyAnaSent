@@ -18,6 +18,7 @@ emoticons = {"happy": ":-) :) :D :o) :] :3 :c) :> =] 8) =) :} :^) :っ) :-))",
              "kiss": ":* :^* ( '}{' )",
              "tongue" : ">:P :-P :P X-P x-p xp XP :-p :p =p :-Þ :Þ :þ :-þ :-b :b d:"}
 
+abbreviations = ["RT"]
 
 class EmoticonsReplacer(BaseEstimator, TransformerMixin):
 
@@ -52,13 +53,48 @@ class LinkRemover(BaseEstimator, TransformerMixin):
         result = np.empty(shape=(len(posts)), dtype=object)
 
         for i, post in enumerate(posts):
-            post = ' '.join(re.sub("(\w+:\/\/\S+)","",post).split())
+            key = "link_" + str(id(post))
+            if not key in cache: cache[key] = ' '.join(re.sub("(\w+:\/\/\S+)","",post).split())
+            post = cache[key]
             result[i] = post
+
 
         return result
 
+class AbbreviationRemover(BaseEstimator, TransformerMixin):
+    def fit(self, x, y=None):
+        return self
+
+    def transform(self, posts):
+        result = np.empty(shape=(len(posts)), dtype=object)
+
+        for i, post in enumerate(posts):
+            key = "ar_" + str(id(post))
+
+            if not key in cache:
+                tokens =[token for token in post.split() if not token in abbreviations]
+                cache[key] = ' '.join(tokens)
+            post = cache[key]
+            result[i] = post
 
 
+        return result
+
+class TagRemover(BaseEstimator, TransformerMixin):
+    def fit(self, x, y=None):
+        return self
+
+    def transform(self, posts):
+        result = np.empty(shape=(len(posts)), dtype=object)
+
+        for i, post in enumerate(posts):
+            key = "tr_" + str(id(post))
+            if not key in cache: cache[key] = ' '.join(re.sub("[\@\#]+","",post).split())
+            post = cache[key]
+            result[i] = post
+
+
+        return result
 
 class Lematization(BaseEstimator, TransformerMixin):
 

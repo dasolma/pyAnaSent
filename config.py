@@ -3,25 +3,37 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import SVC, LinearSVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
-from prepro import Lematization, POS_tag, Steammer,EmoticonsReplacer, LinkRemover
+from prepro import Lematization, POS_tag, Steammer,EmoticonsReplacer, LinkRemover, TagRemover, AbbreviationRemover
 from pipelines import *
 
-transformers = [
-      [ ("emo", EmoticonsReplacer())],
-      [ None, ("link", LinkRemover())],
-      [ ('postag', POS_tag() ) ],
+transformers1 = [
+      #[ ("emo", EmoticonsReplacer())],
+      #[ None, ("link", LinkRemover())],
+      [ ("tag_r", TagRemover())],
+      [ ("abbr_r", AbbreviationRemover())],
+      [ None, ('postag', POS_tag() ),  ('lema', Lematization() ), ('stem', Steammer())  ],
       #[ None,  ('lema', Lematization() ), ('stem', Steammer()) ],
       [ ('vect_ngram1', CountVectorizer(ngram_range=(1,1))),
-         ('vect_ngram2', CountVectorizer(ngram_range=(1,2))),
-         ('vect_ngram3', CountVectorizer(ngram_range=(1,3))),
+        ('vect_ngram2', CountVectorizer(ngram_range=(1,2))),
+        ('vect_ngram3', CountVectorizer(ngram_range=(1,3))),
       ],
-      #[('tfidf', TfidfTransformer())]
-
      ]
 
-classifiers = [('mNB', MultinomialNB()),
+
+
+transformers2 = [
+      #[ ("emo", EmoticonsReplacer())],
+      #[ None, ("link", LinkRemover())],
+      [ ("tag_r", TagRemover())],
+      [ ("abbr_r", AbbreviationRemover())],
+      [  ('vect_ngram2', CountVectorizer(ngram_range=(1,2))),
+         ('vect_ngram3', CountVectorizer(ngram_range=(1,3))),
+      ],
+     ]
+
+classifiers = [#('mNB', MultinomialNB()),
                #('svm', LinearSVC()),
-               #('LR', LogisticRegression()),
+               ('LR', LogisticRegression()),
                #('SGD', SGDClassifier('perceptron')),
                #('Random forest', RandomForestClassifier())
               ]
@@ -40,4 +52,5 @@ params = {#'vect__ngram_range':[(1,1),(1,2),(1,3)],
 
 
 
-pipelines =  name_pipelines(compose_pipelines(transformers, classifiers))
+pipelines =  name_pipelines(compose_pipelines(transformers1, classifiers))
+#pipelines = name_pipelines(compose_pipelines(transformers2, classifiers))
