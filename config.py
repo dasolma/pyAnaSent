@@ -6,9 +6,9 @@ from sklearn.feature_extraction.text import TfidfTransformer, CountVectorizer
 from prepro import Lematization, POS_tag, Steammer,EmoticonsReplacer, LinkRemover, TagRemover, AbbreviationRemover
 from pipelines import *
 
-transformers1 = [
-      #[ ("emo", EmoticonsReplacer())],
-      #[ None, ("link", LinkRemover())],
+transformers = [
+      [ ("emo", EmoticonsReplacer())],
+      #[ ("link", LinkRemover())],
       [ ("tag_r", TagRemover())],
       [ ("abbr_r", AbbreviationRemover())],
       [ None, ('postag', POS_tag() ),  ('lema', Lematization() ), ('stem', Steammer())  ],
@@ -21,22 +21,18 @@ transformers1 = [
 
 
 
-transformers2 = [
-      #[ ("emo", EmoticonsReplacer())],
-      #[ None, ("link", LinkRemover())],
-      [ ("tag_r", TagRemover())],
-      [ ("abbr_r", AbbreviationRemover())],
-      [  ('vect_ngram2', CountVectorizer(ngram_range=(1,2))),
-         ('vect_ngram3', CountVectorizer(ngram_range=(1,3))),
-      ],
-     ]
-
-classifiers = [#('mNB', MultinomialNB()),
-               #('svm', LinearSVC()),
+classifiers = [('mNB', MultinomialNB()),
+               ('svm', LinearSVC()),
                ('LR', LogisticRegression()),
                #('SGD', SGDClassifier('perceptron')),
                #('Random forest', RandomForestClassifier())
               ]
+
+
+class_names = {"mNB": "Naive Bayes",
+                   "svm": "SVM",
+               "LR": "Logistis Regression"
+               }
 
 params = {#'vect__ngram_range':[(1,1),(1,2),(1,3)],
           'tfidf__smooth_idf':[True, False],
@@ -52,5 +48,5 @@ params = {#'vect__ngram_range':[(1,1),(1,2),(1,3)],
 
 
 
-pipelines =  name_pipelines(compose_pipelines(transformers1, classifiers))
+#pipelines =  name_pipelines(compose_pipelines(transformers1, classifiers))
 #pipelines = name_pipelines(compose_pipelines(transformers2, classifiers))

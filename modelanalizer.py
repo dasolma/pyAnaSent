@@ -128,6 +128,7 @@ class StatisticsModelAnalizer():
 
     @staticmethod
     def create_graphs(tag_graph_indexes=(0,), iterations = 30, series_length = 10, title="" ):
+        import config
 
         line_styles=["-", "--", ":", "-."]
         series = collections.defaultdict(lambda: [0] * series_length)
@@ -136,9 +137,9 @@ class StatisticsModelAnalizer():
             for size in reversed(x_axis):
 
                 data_train, data_test, target_train, target_test = get_data_ds2(size=size)
-                ma = ModelAnalizer(pipelines, params)
-                ma.fit(data_train, target_train, verbose=False)
-                scores = ma.score(data_test, target_test, verbose=False)
+                ma = ModelAnalizer(config.pipelines, params)
+                ma.fit(data_train, target_train, verbose=True)
+                scores = ma.score(data_test, target_test, verbose=True)
 
                 #accumulate scores
                 for name,score in scores.iteritems():
@@ -149,7 +150,7 @@ class StatisticsModelAnalizer():
                     series[name][x_axis.index(size)] += score[3]
 
 
-
+        plt.figure()
         min_y = 1.0
         for i,k in zip(range(len(series.keys())),series):
             ls = i / len(line_styles)

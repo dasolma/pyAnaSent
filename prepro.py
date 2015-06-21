@@ -29,8 +29,10 @@ class EmoticonsReplacer(BaseEstimator, TransformerMixin):
         result = np.empty(shape=(len(posts)), dtype=object)
 
         for i, post in enumerate(posts):
-
-            result[i] = self.replace_emoticons(post)
+            key = "emo_" + str(id(post))
+            if not key in cache: cache[key] = self.replace_emoticons(post)
+            post = cache[key]
+            result[i] = post
 
         return result
 
