@@ -72,7 +72,7 @@ swap the emoticons by words that define it:
              
 or remove the links. So, the next charts show the results obtained swapping the emoticons and removing the links.
 
-Now, the POS-tagging techniques have improved the performance become the POS-tagging + 3-gram the choice more correct.
+Now, the POS-tagging techniques have improved the performance become the choice more correct the pair POS-tagging + 3-gram.
  
 ![method](images/graphPreproswithNaiveBayes.png)
 
